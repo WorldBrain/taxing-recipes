@@ -1,0 +1,43 @@
+{
+    "id": "stripe-dashboard",
+    "name": "Stripe Billing Portal",
+    "description": "Generic Stripe billing portal for downloading invoices",
+    "homepage": "https://billing.stripe.com",
+    "getDocuments": [
+        {
+            "action": "paginate",
+            "selector": "[data-testid=\"view-more-button\"]"
+        },
+        {
+            "action": "extractAll",
+            "selector": "a[href^='https://invoice.stripe.com/i/']",
+            "fields": {
+                "date": {
+                    "selector": "div:first-child > div:first-child"
+                },
+                "pdfLink": {
+                    "attribute": "href"
+                },
+                "id": {
+                    "selector": ".",
+                    "attribute": "href"
+                }
+            },
+            "forEach": [
+                { "action": "openNewTab", "url": "{{item.pdfLink}}" },
+                {
+                    "action": "waitForElement",
+                    "selector": "button",
+                    "innerText": "Download invoice",
+                    "timeout": 15000
+                },
+                {
+                    "action": "click",
+                    "selector": "button",
+                    "innerText": "Download invoice",
+                    "interceptDownload": true
+                }
+            ]
+        }
+    ]
+}
