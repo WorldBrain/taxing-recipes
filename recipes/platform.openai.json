@@ -1,0 +1,49 @@
+{
+    "id": "platform.openai.com",
+    "name": "OpenAI API",
+    "description": "Extract billing information from OpenAI dashboard",
+    "homepage": "https://openai.com/settings/organization/billing/history",
+    "getDocuments": [
+        {
+            "action": "navigate",
+            "url": "https://platform.openai.com/settings/organization/billing/history"
+        },
+        {
+            "action": "waitForElement",
+            "selector": ".billing-history-table",
+            "timeout": 25000
+        },
+        {
+            "action": "extractAll",
+            "selector": ".billing-history-table tbody tr",
+            "fields": {
+                "date": {
+                    "selector": "td:nth-child(4)"
+                },
+                "pdfLink": {
+                    "selector": "td:nth-child(5) a",
+                    "attribute": "href"
+                },
+                "id": {
+                    "selector": "td:nth-child(5) a",
+                    "attribute": "href"
+                }
+            },
+            "forEach": [
+                { "action": "openNewTab", "url": "{{item.pdfLink}}" },
+                {
+                    "action": "waitForElement",
+                    "selector": "button",
+                    "innerText": "Download invoice",
+                    "timeout": 15000
+                },
+                {
+                    "action": "click",
+                    "selector": "button",
+                    "innerText": "Download invoice",
+                    "interceptDownload": true
+                }
+            ]
+        }
+    ]
+}
