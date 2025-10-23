@@ -1,0 +1,29 @@
+{
+    "id": "cursor.com",
+    "name": "Cursor",
+    "description": "Extract billing information from Cursor dashboard",
+    "homepage": "https://cursor.com",
+    "getDocuments": [
+        {
+            "action": "navigate",
+            "url": "https://cursor.com/dashboard?tab=billing"
+        },
+        {
+            "action": "waitForElement",
+            "selector": "button",
+            "innerText": "Manage subscription",
+            "timeout": 10000
+        },
+        {
+            "action": "click",
+            "selector": "button",
+            "innerText": "Manage subscription",
+            "expectNewTab": true
+        },
+        {
+            "action": "executeRecipe",
+            "recipeId": "stripe-dashboard"
+        }
+    ]
+}
+
