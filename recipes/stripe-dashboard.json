@@ -4,7 +4,7 @@
     "description": "Generic Stripe billing portal for downloading invoices",
     "checkAuth": [],
     "startAuth": [],
-    "inputVariables": : [
+    "inputVariables": [
         "lastFetchTimestamp"
     ],
     "getDocuments": [
