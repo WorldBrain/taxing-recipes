@@ -4,6 +4,9 @@
     "description": "Generic Stripe billing portal for downloading invoices",
     "checkAuth": [],
     "startAuth": [],
+    "inputVariables": : [
+        "lastFetchTimestamp"
+    ],
     "getDocuments": [
         {
             "action": "paginate",
@@ -32,28 +35,41 @@
                 }
             },
             "forEach": [
-                {
-                    "action": "if",
-                    "script": "{{item.status}} === 'Paid'",
-                    "then": [
-                        {
-                            "action": "openNewTab",
-                            "url": "{{item.pdfLink}}"
-                        },
-                        {
-                            "action": "waitForElement",
-                            "selector": "button",
-                            "textContent": "Download invoice",
-                            "timeout": 15000
-                        },
-                        {
-                            "action": "click",
-                            "selector": "button",
-                            "textContent": "Download invoice",
-                            "interceptDownload": true
-                        }
-                    ]
-                }
+               {
+    "action": "if",
+    "conditions": [
+        {
+            "left": "{{item.status}}",
+            "operator": "==",
+            "right": "Paid"
+        },
+        {
+            "left": "{{item.date}}",
+            "operator": ">",
+            "right": "{{lastFetchTimestamp}}"
+        }
+    ],
+    "logic": "and",
+    "then": [
+        {
+            "action": "openNewTab",
+            "url": "{{item.pdfLink}}"
+        },
+        {
+            "action": "waitForElement",
+            "selector": "button",
+            "textContent": "Download invoice",
+            "timeout": 15000
+        },
+        {
+            "action": "click",
+            "selector": "button",
+            "textContent": "Download invoice",
+            "interceptDownload": true
+        }
+    ],
+    "else": []  // Optional: steps if conditions fail
+}
             ]
         }
     ]
