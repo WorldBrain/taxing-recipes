@@ -2,7 +2,8 @@
     "id": "stripe-dashboard",
     "name": "Stripe Billing Portal",
     "description": "Generic Stripe billing portal for downloading invoices",
-    "homepage": "https://billing.stripe.com",
+    "checkAuth": [],
+    "startAuth": [],
     "getDocuments": [
         {
             "action": "paginate",
@@ -15,27 +16,43 @@
                 "date": {
                     "selector": "div:first-child > div:first-child"
                 },
+                "status": {
+                    "selector": "div:first-child > div:nth-child(3)"
+                },
                 "pdfLink": {
-                    "attribute": "href"
+                    "extract": {
+                        "attribute": "href"
+                    }
                 },
                 "id": {
                     "selector": ".",
-                    "attribute": "href"
+                    "extract": {
+                        "attribute": "href"
+                    }
                 }
             },
             "forEach": [
-                { "action": "openNewTab", "url": "{{item.pdfLink}}" },
                 {
-                    "action": "waitForElement",
-                    "selector": "button",
-                    "innerText": "Download invoice",
-                    "timeout": 15000
-                },
-                {
-                    "action": "click",
-                    "selector": "button",
-                    "innerText": "Download invoice",
-                    "interceptDownload": true
+                    "action": "if",
+                    "script": "{{item.status}} === 'Success'",
+                    "then": [
+                        {
+                            "action": "openNewTab",
+                            "url": "{{item.pdfLink}}"
+                        },
+                        {
+                            "action": "waitForElement",
+                            "selector": "button",
+                            "textContent": "Download invoice",
+                            "timeout": 15000
+                        },
+                        {
+                            "action": "click",
+                            "selector": "button",
+                            "textContent": "Download invoice",
+                            "interceptDownload": true
+                        }
+                    ]
                 }
             ]
         }
