@@ -11,13 +11,13 @@
         {
             "action": "waitForElement",
             "selector": "button",
-            "innerText": "Manage subscription",
+            "textContent": "Manage subscription",
             "timeout": 10000
         },
         {
             "action": "click",
             "selector": "button",
-            "innerText": "Manage subscription",
+            "textContent": "Manage subscription",
             "expectNewTab": true
         },
         {
