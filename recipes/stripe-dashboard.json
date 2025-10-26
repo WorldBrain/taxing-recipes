@@ -34,7 +34,7 @@
             "forEach": [
                 {
                     "action": "if",
-                    "script": "{{item.status}} === 'Success'",
+                    "script": "{{item.status}} === 'Paid'",
                     "then": [
                         {
                             "action": "openNewTab",
